@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<table-filter match-name="t_collect" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_comment" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_episode" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_good_comment" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_good_episode" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_good_pic_comment" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_good_picture" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_pic_collect" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_pic_comment" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_picture" match-catalog="episode"></table-filter>
+	<table-filter match-name="t_user" match-catalog="episode"></table-filter>
+</hibernate-reverse-engineering>

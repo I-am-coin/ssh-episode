@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"        
+"http://tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+	<rule>
+		<from>^/episode/([0-9]+).html$</from>
+		<to type="forward">/episode/getEpisodeById?episodeId=$1</to>
+	</rule>
+	
+	<rule>
+		<from>^/picture/([0-9]+).html$</from>
+		<to type="forward">/picture/getPictureById?pictureId=$1</to>
+	</rule>
+	
+	<rule>
+		<from>^/([a-z]+)/([a-z]+).html$</from>
+		<to type="forward">/$1/$2.jsp</to>
+	</rule>
+</urlrewrite>

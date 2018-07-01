@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 2018-5-10 21:48:34 by Hibernate Tools 5.2.3.Final -->
+<hibernate-mapping>
+ <class catalog="episode" name="com.ads.pojo.TPicture" table="t_picture">
+  <id name="pictureId" type="int">
+   <column name="picture_id"/>
+   <generator class="identity"/>
+  </id>
+  <property generated="never" lazy="false" name="addDate" type="date">
+   <column length="10" name="add_date" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="pictureDesc" type="string">
+   <column length="1200" name="picture_desc"/>
+  </property>
+  <property generated="never" lazy="false" name="pictureImg" type="string">
+   <column length="100" name="picture_img" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="pictureGood" type="java.lang.Integer">
+   <column name="picture_good"/>
+  </property>
+  <set fetch="select" inverse="true" lazy="true" name="TUsers"
+   sort="unsorted" table="t_pic_collect">
+   <key>
+    <column name="picture_id" not-null="true"/>
+   </key>
+   <many-to-many entity-name="com.ads.pojo.TUser" unique="false">
+    <column name="user_id" not-null="true"/>
+   </many-to-many>
+  </set>
+  <set fetch="select" inverse="true" lazy="true" name="TPicComments"
+   sort="unsorted" table="t_pic_comment">
+   <key>
+    <column name="picture_id" not-null="true"/>
+   </key>
+   <one-to-many class="com.ads.pojo.TPicComment"/>
+  </set>
+  <set fetch="select" inverse="true" lazy="true" name="TUsers_1"
+   sort="unsorted" table="t_good_picture">
+   <key>
+    <column name="picture_id" not-null="true"/>
+   </key>
+   <many-to-many entity-name="com.ads.pojo.TUser" unique="false">
+    <column name="user_id" not-null="true"/>
+   </many-to-many>
+  </set>
+ </class>
+</hibernate-mapping>
