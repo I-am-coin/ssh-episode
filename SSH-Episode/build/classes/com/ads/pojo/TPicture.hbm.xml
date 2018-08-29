@@ -12,13 +12,16 @@
    <column length="10" name="add_date" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="pictureDesc" type="string">
-   <column length="1200" name="picture_desc"/>
+   <column length="9999" name="picture_desc"/>
   </property>
   <property generated="never" lazy="false" name="pictureImg" type="string">
-   <column length="100" name="picture_img" not-null="true"/>
+   <column length="999" name="picture_img" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="pictureGood" type="java.lang.Integer">
    <column name="picture_good"/>
+  </property>
+  <property generated="never" lazy="false" name="status" type="int">
+   <column name="status" not-null="true"/>
   </property>
   <set fetch="select" inverse="true" lazy="true" name="TUsers"
    sort="unsorted" table="t_pic_collect">

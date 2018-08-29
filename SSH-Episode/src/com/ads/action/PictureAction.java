@@ -108,26 +108,31 @@ public class PictureAction extends ActionSupport implements ModelDriven<TPicture
 	 */
 	@Action(value="getPictureById",
 			results={
-					@Result(name=SUCCESS, location="/picture/content.html")
+					@Result(name=SUCCESS, location="/picture/content.html"),
+					@Result(name=ERROR, location="/error.html")
 			})
 	public String getPictureById() {
-		int userId = this.sessionMap.get("user") == null ? -1 : ((TUser) this.sessionMap.get("user")).getUserId();
-		int pictureId = picture.getPictureId();
-		TPicture p = pictureService.getPictureById(pictureId);
-		this.requestMap.put("picture", p);
-		// 解决懒加载问题
-		p.setTPicComments(null);
-		p.setTUsers(null);
-		p.setTUsers_1(null);
-		
-		if (userId != -1) {
-			int collect = pictureService.isUserCollect(userId, pictureId) ? 1 : 0;
-			int good = pictureService.isUserGood(userId, pictureId) ? 1 : 0;
-			requestMap.put("collectFlag", collect);
-			requestMap.put("goodFlag", good);
+		try {
+			int userId = this.sessionMap.get("user") == null ? -1 : ((TUser) this.sessionMap.get("user")).getUserId();
+			int pictureId = picture.getPictureId();
+			TPicture p = pictureService.getPictureById(pictureId);
+			this.requestMap.put("picture", p);
+			// 解决懒加载问题
+			p.setTPicComments(null);
+			p.setTUsers(null);
+			p.setTUsers_1(null);
+			
+			if (userId != -1) {
+				int collect = pictureService.isUserCollect(userId, pictureId) ? 1 : 0;
+				int good = pictureService.isUserGood(userId, pictureId) ? 1 : 0;
+				requestMap.put("collectFlag", collect);
+				requestMap.put("goodFlag", good);
+			}
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			return ERROR;
 		}
-		
-		return SUCCESS;
 	}
 	
 	/**

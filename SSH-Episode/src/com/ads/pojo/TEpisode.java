@@ -31,6 +31,7 @@ public class TEpisode implements java.io.Serializable {
 	private Date addDate;
 	private String episodeContent;
 	private int episodeGood;
+	private int status;
 	private Set<TUser> TUsers = new HashSet<TUser>(0);
 	private Set<TComment> TComments = new HashSet<TComment>(0);
 	private Set<TUser> TUsers_1 = new HashSet<TUser>(0);
@@ -98,6 +99,15 @@ public class TEpisode implements java.io.Serializable {
 
 	public void setEpisodeGood(int episodeGood) {
 		this.episodeGood = episodeGood;
+	}
+	
+	@Column(name = "status", nullable = false)
+	public int getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	/**

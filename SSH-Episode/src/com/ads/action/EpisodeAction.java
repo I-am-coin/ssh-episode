@@ -82,26 +82,31 @@ public class EpisodeAction extends ActionSupport implements ModelDriven<TEpisode
 	 */
 	@Action(value="getEpisodeById",
 			results={
-					@Result(name=SUCCESS, location="/episode/content.html")
+					@Result(name=SUCCESS, location="/episode/content.html"),
+					@Result(name=ERROR, location="/error.html")
 			})
 	public String getEpisodeById() {
-		int userId = this.sessionMap.get("user") == null ? -1 : ((TUser) this.sessionMap.get("user")).getUserId();
-		Integer episodeId = this.episode.getEpisodeId();
-		TEpisode e = this.episodeService.getEpisodeById(episodeId);
-		e.setTComments(null);
-		e.setTUsers(null);
-		e.setTUsers_1(null);
-		
-		if (userId != -1) {
-			int collect = episodeService.isUserCollect(userId, episodeId) ? 1 : 0;
-			int good = episodeService.isUserGood(userId, episodeId) ? 1 : 0;
-			requestMap.put("collectFlag", collect);
-			requestMap.put("goodFlag", good);
+		try {
+			int userId = this.sessionMap.get("user") == null ? -1 : ((TUser) this.sessionMap.get("user")).getUserId();
+			Integer episodeId = this.episode.getEpisodeId();
+			TEpisode e = this.episodeService.getEpisodeById(episodeId);
+			e.setTComments(null);
+			e.setTUsers(null);
+			e.setTUsers_1(null);
+			
+			if (userId != -1) {
+				int collect = episodeService.isUserCollect(userId, episodeId) ? 1 : 0;
+				int good = episodeService.isUserGood(userId, episodeId) ? 1 : 0;
+				requestMap.put("collectFlag", collect);
+				requestMap.put("goodFlag", good);
+			}
+			
+			requestMap.put("episode", e);
+			
+			return SUCCESS;
+		} catch (Exception e) {
+			return ERROR;
 		}
-		
-		requestMap.put("episode", e);
-		
-		return SUCCESS;
 	}
 	
 	/**

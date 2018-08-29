@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ public class EpisodeDaoImpl extends HibernateDaoSupport implements EpisodeDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(TEpisode.class);
 		criteria.addOrder(Order.desc("episodeId"));
+		criteria.add(Restrictions.eq("status", 1));
 		criteria.setFirstResult((pageNum-1) * 10);
 		criteria.setMaxResults(10);
 		
@@ -57,7 +59,7 @@ public class EpisodeDaoImpl extends HibernateDaoSupport implements EpisodeDao {
 		
 		Session session = this.getSessionFactory().getCurrentSession();
 		
-		String hql = "DELETE FROM TEpisode e WHERE e.addDate < ?";
+		String hql = "UPDAETE TEpisode e SET e.status = 0 WHERE e.addDate < ?";
 		
 		Query query2 = session.createQuery(hql);//删除段子
 		query2.setParameter(0, addTime);
@@ -80,7 +82,7 @@ public class EpisodeDaoImpl extends HibernateDaoSupport implements EpisodeDao {
 	
 	public long getEpisodeNum(){
 		Session session = this.getSessionFactory().getCurrentSession();
-		String hql = "SELECT count(*) FROM TEpisode";
+		String hql = "SELECT count(*) FROM TEpisode e WHERE e.status = 1";
 		Query query = session.createQuery(hql);
 		Long count = (Long) query.uniqueResult();
 		if (count != null) {
@@ -93,8 +95,8 @@ public class EpisodeDaoImpl extends HibernateDaoSupport implements EpisodeDao {
 	public List<TEpisode> getEpisodeByUserId(int userId, int pageNum) {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String sql =  
-                "SELECT e.episode_id as episodeId,e.episode_content as episodeContent,e.add_date as addDate,e.episode_good as episodeGood"
-                    + " FROM t_episode e LEFT JOIN t_collect c ON e.episode_id=c.episode_id where c.user_id = "+userId;
+                "SELECT e.episode_id as episodeId,e.episode_content as episodeContent,e.add_date as addDate,e.episode_good as episodeGood, e.status as status"
+                    + " FROM t_episode e LEFT JOIN t_collect c ON e.episode_id=c.episode_id where e.status = 1 AND c.user_id = "+userId;
 		Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.aliasToBean(TEpisode.class));
 		query.setFirstResult((pageNum-1) * 10);
 		query.setMaxResults(10);
@@ -109,7 +111,7 @@ public class EpisodeDaoImpl extends HibernateDaoSupport implements EpisodeDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String sql =  
                 "SELECT count(*) "  
-                    + "FROM t_episode e LEFT JOIN t_collect c ON e.episode_id=c.episode_id where c.user_id = "+userId;
+                    + "FROM t_episode e LEFT JOIN t_collect c ON e.episode_id=c.episode_id where e.status = 1 AND c.user_id = "+userId;
 		Query query = session.createSQLQuery(sql);
 		Long count = ((BigInteger) query.uniqueResult()).longValue();
 		

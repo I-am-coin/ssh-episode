@@ -23,10 +23,12 @@ class HtmlParser(object):
         '''
         new_urls = set()
         
-        links = soup.find_all('input', id='articleNextLink')
+        #links = soup.find_all('input', id='articleNextLink')
+        links = soup.find_all('a', clazz='doc-joke')
         
         for link in links:
-            new_url = link['value']
+#             new_url = link['value']
+            new_url = link['href']
             if new_url is not None or new_url != '':
                 new_full_url = urljoin(page_url, new_url)#拼接成一个url
                 
@@ -46,8 +48,10 @@ class HtmlParser(object):
         #url
         res_data['url'] = page_url
         #class="j-r-list-c-desc"
-        node = soup.find('div', class_='content')
-        thumb = soup.find('div', class_='thumb')
+#         node = soup.find('div', class_='content')
+#         thumb = soup.find('div', class_='thumb')
+        node = soup.find('div', class_='content-bd')
+        thumb = None
         node_img = None
         res_data['content'] = None
         res_data['img'] = None
@@ -58,7 +62,7 @@ class HtmlParser(object):
             res_data['img'] = node_img
         if node != None:
             content = node.get_text().replace(u'\xa0', u' ').replace(u'\x01', u'').strip()
-            if len(content) * 3 < 1200: # 只要指定长度以内的数据
+            if len(content) > 0: # 只要指定长度以内的数据
                 if node_img != None:
                     res_data['content'] = 'img:' + content
                 else:
@@ -74,7 +78,7 @@ class HtmlParser(object):
              
         return res_data
     
-    def parse(self, page_url, html_cont):
+    def parse(self, page_url, html_cont, type):
         '''
         @summary: 解析页面
         @param page_url: 页面url-str
@@ -85,8 +89,18 @@ class HtmlParser(object):
             return
         
         soup = BeautifulSoup(html_cont, 'html.parser')
-        new_urls = self._get_new_urls(page_url, soup)
-        new_data = self._get_new_data(page_url, soup)
+        new_urls = None
+        new_data = None
+        
+        if type == 1:#获取url
+            new_urls = self._get_new_urls(page_url, soup)
+        elif type == 2:#获取data
+            new_data = self._get_new_data(page_url, soup)
+        elif type == 3:
+            new_urls = self._get_new_urls(page_url, soup)
+            new_data = self._get_new_data(page_url, soup)
+        else:
+            return
         
         return new_urls, new_data
 

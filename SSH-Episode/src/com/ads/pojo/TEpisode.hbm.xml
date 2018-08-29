@@ -12,10 +12,13 @@
    <column length="10" name="add_date" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="episodeContent" type="string">
-   <column length="1200" name="episode_content" not-null="true"/>
+   <column length="9999" name="episode_content" not-null="true"/>
   </property>
   <property generated="never" lazy="false" name="episodeGood" type="int">
    <column name="episode_good" not-null="true"/>
+  </property>
+  <property generated="never" lazy="false" name="status" type="int">
+   <column name="status" not-null="true"/>
   </property>
   <set fetch="select" inverse="true" lazy="true" name="TUsers"
    sort="unsorted" table="t_collect">

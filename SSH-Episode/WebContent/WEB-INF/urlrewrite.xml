@@ -17,4 +17,8 @@
 		<from>^/([a-z]+)/([a-z]+).html$</from>
 		<to type="forward">/$1/$2.jsp</to>
 	</rule>
+	<rule>
+		<from>^/error.html$</from>
+		<to type="forward">/error.jsp</to>
+	</rule>
 </urlrewrite>

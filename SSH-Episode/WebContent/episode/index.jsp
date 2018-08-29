@@ -13,14 +13,14 @@
 	}
 	//----获取用户数据
 	TUser user = (TUser)session.getAttribute("user");
-	user = new TUser();
+	/* user = new TUser();
 	user.setUserId(10000010);
 	user.setUserNickname("coin");
 	user.setUserGender(1);
 	user.setUserImage("http://qzapp.qlogo.cn/qzapp/101475887/5353027B1CA086F80D8819EF30D9049D/100");
 	user.setUserPassword("default");
 	user.setOpenId("5353027B1CA086F80D8819EF30D9049D");
-	session.setAttribute("user", user);
+	session.setAttribute("user", user); */
 	int flag = 0;
 	if (user != null) {
 		flag = 1;
@@ -62,7 +62,8 @@
 			<a href="episode/index.html" class="logo iconfont icon-logo"></a>
 			<div class="channel" >
 				 <a class="a-hover active" href="episode/index.html">段子</a>
-				 <a class="a-hover" href="picture/index.html">图片</a>
+				 <!-- <a class="a-hover" href="picture/index.html">图片</a> -->
+				 <a class="a-hover" href="episode/index.html">图片</a>
 				 <a class="a-hover" href="episode/index.html">视频</a>
 			</div>
 			<!-- 

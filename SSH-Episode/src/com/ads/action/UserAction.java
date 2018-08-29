@@ -376,7 +376,6 @@ public class UserAction extends ActionSupport implements ModelDriven<TUser>, Ser
 	                    user.setUserImage(userInfoBean.getAvatar().getAvatarURL100());
 	                    user.setLoginTime(new Date());
 	                    user.setUserPassword("default");
-	                    
 	                    int userId = userSerivce.inserUser(user);
 	                    user.setUserId(userId);
 	                    
@@ -387,6 +386,24 @@ public class UserAction extends ActionSupport implements ModelDriven<TUser>, Ser
         			status = "error";
 					e.printStackTrace();
 				}
+			} else {//已注册，更新信息
+				UserInfo qzoneUserInfo = new UserInfo(accessToken, openId);
+	            try {
+					UserInfoBean userInfoBean = qzoneUserInfo.getUserInfo();
+					if (userInfoBean.getRet() == 0) {
+	                    user.setUserNickname(userInfoBean.getNickname());
+	                    user.setUserGender(userInfoBean.getGender().equals("男")?1:0);
+	                    user.setUserImage(userInfoBean.getAvatar().getAvatarURL100());
+	                    user.setLoginTime(new Date());
+	                    userSerivce.updateUserInfo(user);
+	                } else {
+	        			status = "error";
+	                }
+				} catch (QQConnectException e) {
+        			status = "error";
+					e.printStackTrace();
+				}
+				
 			}
 		}
 		

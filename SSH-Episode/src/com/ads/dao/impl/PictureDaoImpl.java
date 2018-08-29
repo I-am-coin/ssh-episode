@@ -12,6 +12,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,7 @@ public class PictureDaoImpl extends HibernateDaoSupport implements PictureDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(TPicture.class);
 		criteria.addOrder(Order.desc("pictureId"));
+		criteria.add(Restrictions.eq("status", 1));
 		criteria.setFirstResult((pageNum-1) * 10);
 		criteria.setMaxResults(10);
 		
@@ -57,7 +59,7 @@ public class PictureDaoImpl extends HibernateDaoSupport implements PictureDao {
 		
 		Session session = this.getSessionFactory().getCurrentSession();
 		
-		String hql = "DELETE FROM TPicture e WHERE e.addDate < ?";
+		String hql = "UPDATE TPicture e SET e.status = 0 WHERE e.addDate < ?";
 		
 		Query query2 = session.createQuery(hql);//删除图片
 		query2.setParameter(0, addTime);
@@ -81,7 +83,7 @@ public class PictureDaoImpl extends HibernateDaoSupport implements PictureDao {
 	
 	public long getPictureNum(){
 		Session session = this.getSessionFactory().getCurrentSession();
-		String hql = "SELECT count(*) FROM TPicture";
+		String hql = "SELECT count(*) FROM TPicture p WHERE p.status = 1";
 		Query query = session.createQuery(hql);
 		Long count = (Long) query.uniqueResult();
 		if (count != null) {
@@ -95,8 +97,8 @@ public class PictureDaoImpl extends HibernateDaoSupport implements PictureDao {
 		
 		Session session = this.getSessionFactory().getCurrentSession();
 		String sql =  
-                "SELECT e.picture_id as pictureId,e.picture_img as pictureImg,e.picture_desc as pictureDesc,e.add_date as addDate,e.picture_good as pictureGood "  
-                    + "FROM t_picture e LEFT JOIN t_pic_collect c ON e.picture_id=c.picture_id where c.user_id = "+userId;
+                "SELECT e.picture_id as pictureId,e.picture_img as pictureImg,e.picture_desc as pictureDesc,e.add_date as addDate,e.picture_good as pictureGood, e.status as status "  
+                    + "FROM t_picture e LEFT JOIN t_pic_collect c ON e.picture_id=c.picture_id where e.status = 1 AND c.user_id = "+userId;
 		Query query = session.createSQLQuery(sql).setResultTransformer(Transformers.aliasToBean(TPicture.class));
 		query.setFirstResult((pageNum-1) * 10);
 		query.setMaxResults(10);
@@ -112,7 +114,7 @@ public class PictureDaoImpl extends HibernateDaoSupport implements PictureDao {
 		Session session = this.getSessionFactory().getCurrentSession();
 		String sql =  
                 "SELECT count(*) "  
-                    + "FROM t_picture e LEFT JOIN t_pic_collect c ON e.picture_id=c.picture_id where c.user_id = "+userId;
+                    + "FROM t_picture e LEFT JOIN t_pic_collect c ON e.picture_id=c.picture_id where e.status = 1 AND c.user_id = "+userId;
 		Query query = session.createSQLQuery(sql);
 		Long count = ((BigInteger) query.uniqueResult()).longValue();
 		

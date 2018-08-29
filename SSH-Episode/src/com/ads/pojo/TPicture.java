@@ -30,6 +30,7 @@ public class TPicture implements java.io.Serializable {
 	private String pictureDesc;
 	private String pictureImg;
 	private Integer pictureGood;
+	private int status;
 	private Set<TUser> TUsers = new HashSet<TUser>(0);
 	private Set<TPicComment> TPicComments = new HashSet<TPicComment>(0);
 	private Set<TUser> TUsers_1 = new HashSet<TUser>(0);
@@ -101,6 +102,15 @@ public class TPicture implements java.io.Serializable {
 
 	public void setPictureGood(Integer pictureGood) {
 		this.pictureGood = pictureGood;
+	}
+	
+	@Column(name = "status", nullable = false)
+	public int getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "TPictures")
